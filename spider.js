@@ -113,7 +113,7 @@ function play_song(song_name, [song_id, image_id, singer, album]){
     var txt = `http://music.qq.com/miniportal/static/lyric/${song_id % 100}/${song_id}.xml`;
     $.ajax({
         type: "post",
-        url: "./proxy.php",   // 这一块考虑直接改用$.ajax做同步请求
+        url: "./proxy.php",
         data: {txt},
         async : false,
         success: function(data) {
@@ -177,7 +177,6 @@ function timer(lrc_items){
                 lrc_items.removeClass('inactive');
                 if(i > 1) $(lrc_items[i-2]).addClass('inactive');
                 if(i < lrc_items.length-2) $(lrc_items[i+2]).addClass('inactive');
-                window.console.log(i);
                 item.addClass('active');
                 dt = item[0].getBoundingClientRect().top - counter; // 右边 = 40；
                 st += dt;
@@ -254,14 +253,13 @@ search_btn.onclick = function () {
             }
         }
         HideItem();
-        //search.style.display = "none";  // 隐藏搜索栏（无动画已弃用）
     }
     else {
         ShowItem();
-        //search.style.display = "";      // 显示搜索栏（无动画已弃用）
     }
     click_counter++;
     search_btn.disabled = false;
+    return false; // Prevent Default Action
 };
 
 
@@ -279,14 +277,11 @@ like.onclick = function(){
         // 将歌曲id写入liked_id.txt，当启用非单曲播放模式时直接载入歌曲。暂时考虑用在flask框架中ajax向后台发请求，完成数据的改写
         json_liked.liked[song_name] = [song_id, image_id, singer, album];    // 在这里直接加个json文件不就好了
         // 向服务器端发送新的请求用上传的参数覆盖json_like之前的
-        //$.post("/liked", json_liked);
-        //fs.writeFile("./data/", JSON.stringify(json, json_liked, 4));
         like_num++;
     }
     else{
         like.innerHTML = unliked;
         delete json_liked.liked[song_name];    // 将歌曲id从liked_id.txt中删除
-        //fs.writeFile("./data/", JSON.stringify(json, json_liked, 4));
         like_num--;
     }
 };

@@ -23,13 +23,11 @@ ctrl.onclick = function(){
         music.pause();                          // Update the Audio
         ctrl.innerHTML = play_i;                // Update the Icon (Button)
         cd.style.animationPlayState = "paused"; // Update the CD-Image
-        ;                                       // Update the Lyrics
     }
     else{
         music.play();
         ctrl.innerHTML = pause_i;
         cd.style.animationPlayState = "running";
-        ;
     }
 
     return false; // Prevent Default Action
