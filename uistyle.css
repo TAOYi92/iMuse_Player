@@ -1,0 +1,171 @@
+
+h2{
+    font-family: Lobster, Monospace, serif;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+body{
+    background-color: black;
+    background-size: cover;
+}
+
+.bg{
+    position: absolute;
+    height:900px;
+    text-align: center;
+    line-height: 600px;
+    z-index: -1;
+}
+
+.bg-blur{
+    float: left;
+    width: 100%;
+    background: no-repeat center;
+
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    -webkit-filter: blur(100px);
+    -moz-filter: blur(100px);
+    -ms-filter: blur(100px);
+    -o-filter: blur(100px);
+    filter: blur(100px);
+}
+
+#search{
+    position: absolute;
+    top: 20px;
+}
+
+#search-btn{
+    background-color: transparent;
+    text-align: center;
+    color: #f0f0f0;
+    outline: none;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #f0f0f0;
+    opacity:  0.2;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #f0f0f0;
+    opacity:  0.2;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #f0f0f0;
+    opacity:  0.2;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #f0f0f0;
+    opacity:  0.2;
+}
+
+#search-input{
+    background-color: transparent;
+    border: transparent;
+    border-bottom: 1px solid;
+    border-bottom-color: aliceblue;
+    text-align: center;
+    color: lightyellow;
+    outline: none;
+}
+
+#like{
+    position: absolute;
+    top: 55px;
+    left: 15px;
+    background-color: transparent;
+    text-align: center;
+    color: #f0f0f0;
+    outline: none;
+}
+
+#mode{
+    position: absolute;
+    top: 90px;
+    left: 15px;
+    background-color: transparent;
+    text-align: center;
+    color: #f0f0f0;
+    outline: none;
+}
+
+/* 控制CD旋转的CSS动画 */
+@-webkit-keyframes rotate{
+    from{-webkit-transform:rotate(0deg)}
+    to{-webkit-transform:rotate(360deg)}
+}
+@-moz-keyframes rotate{
+    from{-moz-transform:rotate(0deg)}
+    to{-moz-transform:rotate(360deg)}
+}
+@-ms-keyframes rotate{
+    from{-ms-transform:rotate(0deg)}
+    to{-ms-transform:rotate(360deg)}
+}
+@-o-keyframes rotate{
+    from{-o-transform:rotate(0deg)}
+    to{-o-transform:rotate(360deg)}
+}
+
+/** CD封面（遮罩）**/
+#cd{
+    background-color: navajowhite;
+    animation: 9.5s linear 0s normal none infinite rotate;
+    -webkit-animation: 9.5s linear 0s normal none infinite rotate;
+    /** 尺寸 **/
+    height: 180px;
+    width: 180px;
+    /** 边界调整，自动居中 **/
+    position: absolute;
+    margin: auto;
+    /** 边框：天蓝色，1px宽，实线，正圆形包络 **/
+    border: lightskyblue 1px solid;
+    border-radius: 50%;
+}
+
+#audioControl{
+    background-color: transparent;
+    color: antiquewhite;
+    position: absolute;
+    top: 83px;  /** 这里还是要手动，不然看不到图标，因此仍可改进 **/
+    left: 84px; /** icon大小12*14 所以83=0.5*(180-14) 84=0.5*(180-12)**/
+}
+
+#white-circle{
+    background-color: transparent;
+    position: absolute;
+}
+
+#pic-parent{
+    height: 100px;
+    width: 180px;
+    margin: 80px auto;
+    position: relative;  /** 当父元素的position设为relative时，其子元素的absolute position是按照父元素的相对位置来的  **/
+}
+
+#info{
+    color: darkorange;
+    text-align: center;
+    margin: auto;
+}
+
+#lyricBox div{
+    margin-bottom: 10px;
+}
+
+#lyricBox div.active{
+    color: #00b3ee;
+    font-size: larger;
+}
+
+#lyricBox div.inactive{
+    font-size: smaller;
+    opacity: 0.6;
+}

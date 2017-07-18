@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Dark Matter</title>
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css"/> <!-- Google字体 -->
+    <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/> <!-- 响应式框架Bootstrap -->
+    <link href="./lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/> <!-- Font Awesome图标库 -->
+    <link href="./lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="./uistyle.css" rel="stylesheet" type="text/css"/>
+    <script src="./lib/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        <div id="bg" class="bg bg-blur"></div>
+        <div class="container-fluid">
+            <div class="row">
+                <div id="search" class="col-xs-10">
+                    <button id="search-btn" class="btn"><i class="fa fa-search"></i></button>
+                    <input id="search-input" type="text" placeholder="搜索歌曲" size="12" maxlength="30">
+                </div>
+                <div class="col-xs-11">
+                    <h2 class="text-primary text-center">iMuse</h2>
+                </div>
+            </div>
+            <div><button id="like" class="btn"><i class="fa fa-heart-o"></i></button></div>
+            <div><button id="mode" class="btn"><i class="fa fa-retweet"></i></button></div>
+            <div id="pic-parent">
+                <div id="cd" class="img-responsive"></div>
+                <div id="white-circle">
+                    <embed src="whitecircle.svg" type="image/svg+xml" pluginspage="http://wcp ww.adobe.com/svg/viewer/install/"></embed>
+                </div>
+                <div id="audioControl" class="play-button"><i class="fa fa-pause"></i></div>
+                <audio id="music" autoplay loop></audio>
+            </div>
+            <div id="info"></div>
+            <div id="visualBox" class="h4 text-center" style="color: lightyellow; height: 200px; line-height: 30px; margin-top: 60px; font-family: Lobster, Monospace, serif; overflow: hidden">
+                <div id="lyricBox"></div>
+            </div>
+        </div>
+    </div>
+    <script src="play_pause.js"></script>
+    <script src="platform.js"></script>
+    <script src="spider.js"></script>
+</body>
+</html>
+
+<!--
+/* 需要学习掌握的技术：
+1. 在指定位置添加按钮触发播放操作，再次按下触发暂停操作(js搞定)
+2. 暂停时图片转动和音频都暂停(js搞定)
+3. 通过api接口动态链接播放音乐地址和专辑封面图片（js搞定）
+4. 歌词滚动显示（js搞定）
+5. 背景图片模糊化（css搞定）
+6. 光盘旋转动画（css搞定）
+7. 搜索栏目显示/隐藏（css搞定）
+8. 将项目套上flask框架（py）
+9. 写数据，创建"我喜欢"收藏列表，实现随机播放等功能（py+js+sql?）
+*/
+-->
