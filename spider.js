@@ -74,7 +74,7 @@ function search_song(song){
         image_id = song_data_list.f.split("|")[4];
         singer = song_data_list.fsinger + " " + song_data_list.fsinger2;
         album = "《" + song_data_list.albumName_hilight.replace(/<\/?span.*>/, "") + "》";
-        if(album === "《》"){
+        if(album === "《》" || album === "《空》"){
             album = "*没有找到专辑信息*";
         }
         play_song(song_name, [song_id, image_id, singer, album]);
@@ -104,6 +104,13 @@ function play_song(song_name, [song_id, image_id, singer, album]){
     lyricBox.innerHTML = "<div>正在尝试加载歌词...</div>";
 
     // 这里传数据song_name, song_id给后端，从后端获得json格式数据赋给json_liked
+    /*$.get(
+        "liked.php",
+        function(js){
+            json_liked = js;
+            window.console.log(js+" 1~");
+        }
+    );*/
     if (json_liked.liked[song_name]){
         like.innerHTML = liked;
     }
@@ -118,14 +125,17 @@ function play_song(song_name, [song_id, image_id, singer, album]){
         async : false,
         success: function(data) {
             lyric = data.replace(/<\/?lyric.*>|<\?.*\?>|<!\[CDATA\[|\]\]>|\[\d\d:\d\d\.\d\d\] \]\]>/g, "").split("\n");
-            if (lyric[lyric.length - 1] === "") lyric.pop();  // 有的歌词split后的末尾元素为空造成后面正则匹配出错
+            while(lyric[lyric.length - 1] === ""){
+                lyric.pop();
+            }  // 有的歌词split后的末尾元素为空造成后面正则匹配出错
+            //window.console.log(lyric);
             var lyricValue = [],            // 存储歌词文本
                 lyricTime = [],             // 存储歌词时间
                 lyricSeconds = [],          // 将时间转化为秒数
                 lyricHTML = '';             // 填入lyricBox中的全部歌词<div>标签
             for (var i = 5; i < lyric.length; i++) {
                 lyricValue.push(lyric[i].replace(/\[\d\d:\d\d\.\d\d\]/, ""));
-                if (lyricValue[i - 5] === "") {
+                if (lyricValue[i - 5] === "" || lyricValue[i - 5] === "\r" || lyricValue[i - 5] === "\n") {
                     lyric[i] += "- -";
                     lyricValue[i - 5] = "- -";  // 应该改为依赖时间间隔插入分界符
                 }
@@ -142,15 +152,15 @@ function play_song(song_name, [song_id, image_id, singer, album]){
         },
         fail: function () {
             $("#lyricBox").css({
-                transform: 'translateY(0px)',
-                webkitTransform: 'translateY(0px)'
+                transform: 'translateY(' + (dt*2) + 'px)',
+                webkitTransform: 'translateY(' + (dt*2) + 'px)'
             });
             lyricBox.innerHTML = "<div>** 暂无歌词 **</div>";
         }});
     if(lyricBox.innerHTML === "<div>正在尝试加载歌词...</div>"){
         $("#lyricBox").css({
-            transform: 'translateY(0px)',
-            webkitTransform: 'translateY(0px)'
+            transform: 'translateY(' + (dt*2) + 'px)',
+            webkitTransform: 'translateY(' + (dt*2) + 'px)'
         });
         lyricBox.innerHTML = "<div>** 暂无歌词 **</div>";
     }
@@ -242,7 +252,7 @@ search_btn.onclick = function () {
         if (search.value) {
             if (last !== search.value) {  // 避免用户手抖
                 last = search.value;
-                if (++click_counter < 2 && search.value === default_song) {
+                if (search.value === song_name) {
                     HideItem();
                     search_btn.disabled = false;
                     return;
@@ -268,21 +278,70 @@ var like = document.getElementById("like");
 var liked = '<i class="fa fa-heart" style="color: red; opacity: 0.8"></i>',
     unliked = '<i class="fa fa-heart-o"></i>';
 
-var json_liked = {"user": "ty", "liked": {}};
-var like_num = 0;
+var json_liked = {
+    "user": "ty",
+    "liked": {
+        "Love Story": [639141, 54362, "Taylor Swift", "《Fearless (Platinum Edition)》"],
+        "Zodiac": [5172625, 449763, "银临 Tacke竹桑", "《腐草为萤》"],
+        "贝加尔湖畔": [7016921, 89254, "李健", "《依然》"],
+        "童话": [101532, 8489, "光良", "《Songs Of Painting》"],
+        "木棉": [106716183, 641458, "霍尊", "《天韵·霍尊》"],
+        "之子于归 (独唱版)": [102807052, 1034029, "霍尊", "《华胥引 电视剧原声带》"],
+        "锦鲤抄": [107812289, 1533138, "银临", "天命风流"],
+        "泸沽寻梦": [5172623, 449763, "银临", "腐草为萤"],
+        "一次就好": [104783753, 1182135, "杨宗纬", "《夏洛特烦恼 电影原声带》"],
+        "车站 (Live)": [102350727, 980035, "李健", "《我是歌手 2015巅峰会》"],
+        "假如爱有天意": [105670451, 1061065, "李健", "《李健》"],
+        "身骑白马": [4785876, 425350, "徐佳莹", "《K情歌9》"],
+        "爱就一个字": [1505470, 121495, "张信哲", "《从开始到现在》"],
+        "等待黎明": [103184206, 1067217, "李健", "*没有找到专辑信息*"],
+        "化身孤岛的鲸": [101806738, 930150, "周深", "*没有找到专辑信息*"],
+        "想你的三百六十五天": [105580320, 1282842, "李玟", "《宝莲灯 电影原声音乐》"],
+        "深海之寻": [105670442, 1061065, "李健", "《李健》"],
+        "小幸运 (Live)": [200281166, 1799594, "田馥甄", "《浙江卫视领跑2017爱在一起演唱会》"],
+        "时间都去哪儿了": [7079766, 110484, "王铮亮", "《听得到的》"],
+        "成都": [108963136, 1666157, "赵雷", "《无法长大》"],
+        "平凡之路 (Live)": [200281279, 1799594, "朴树", "《浙江卫视领跑2017爱在一起演唱会》"],
+        "在水一方 (Live)": [102053189, 951206, "李健", "《我是歌手第三季 第5期》"],
+        "The Truth That You Leave (钢琴曲)": [4793649, 426069, "高至豪", "《A best》"],
+        "Atlantis love": [200589023, 929886, "V.K克", "《Deemo》"],
+        "Pure White": [200589038, 929886, "V.K克", "*没有找到专辑信息*"],
+        "等不到的爱": [856889, 73190, "文章", "《裸婚时代 电视剧原声带》"],
+        "The Dawn": [876988, 34784, "Dreamtale", "《Beyond Reality》"],
+        "Bad Apple!!": [106256359, 8623, "初音ミク", "*没有找到专辑信息*"],
+        "Wings Of Piano": [101803994, 929886, "V.K克", "《Deemo》"],
+        "倾心相许": [7235331, 14849, "李彩桦", "罗嘉良", "《人造雨》"],
+        "手掌心": [4988895, 431765, "丁当", "《兰陵王 电视剧原声带》"],
+        "again (アニメ Version)": [102214175, 966296, "YUI", "《鋼の錬金術師 FULLMETAL ALCHEMIST Original Soundtrack 1》"],
+        "暗香": [108879606, 1644978, "沙宝亮", "*没有找到专辑信息*"],
+        "LET IT OUT": [631047, 53637, "福原美穂", "*没有找到专辑信息*"],
+        "Butter-Fly (结局版)": [201626153, 8623, "和田光司", "*没有找到专辑信息*"],
+        "I wish": [103178398, 1066541, "AiM", "《デジモンアドベンチャー キュートビートクラブ》"]
+    }
+};
 
 like.onclick = function(){
+    /*var data = {"act": 1, "song_name": song_name, "song_list": [song_id, image_id, singer, album]};*/
     if(like.innerHTML === unliked){
         like.innerHTML = liked;
         // 将歌曲id写入liked_id.txt，当启用非单曲播放模式时直接载入歌曲。暂时考虑用在flask框架中ajax向后台发请求，完成数据的改写
+        /*$.post(
+            "liked.php",
+            {data},
+            function(js){window.console.log(song_name+" 已添加至'我喜欢'歌单中");}
+        );*/
         json_liked.liked[song_name] = [song_id, image_id, singer, album];    // 在这里直接加个json文件不就好了
         // 向服务器端发送新的请求用上传的参数覆盖json_like之前的
-        like_num++;
     }
     else{
         like.innerHTML = unliked;
+        /*data["act"] = -1;
+        $.post(
+            "liked.php",
+            {data},
+            function(js){window.console.log(song_name+" 已从'我喜欢'歌单中删除");}
+        );*/
         delete json_liked.liked[song_name];    // 将歌曲id从liked_id.txt中删除
-        like_num--;
     }
 };
 
@@ -312,6 +371,13 @@ var next = '',          // 下一首
 var iInterval;
 // 在顺序播放和随机播放模式下的下一首音乐确定
 function Next(){
+    /*$.get(
+        "liked.php",
+        function(js){
+            json_liked = js;
+            window.console.log(js+" 2~");
+        }
+    );*/
     if(json_liked.liked === {}){  // 避免空的歌单造成bug
         play_song(song_name, [song_id, image_id, singer, album]);
         return;
