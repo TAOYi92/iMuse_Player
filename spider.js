@@ -146,6 +146,11 @@ function play_song(song_name, [song_id, image_id, singer, album]){
             $("#lyricBox").html(lyricHTML);
             var lrc_items = $("#lyricBox").children();
             if (lrc_items.size < 1) {
+                $("#lyricBox").css({
+                    transform: 'translateY(' + (dt*2) + 'px)',
+                    webkitTransform: 'translateY(' + (dt*2) + 'px)'
+                });
+                lyricBox.innerHTML = "<div>** 暂无歌词 **</div>";
                 return;
             }
             timer(lrc_items);
@@ -316,7 +321,8 @@ var json_liked = {
         "暗香": [108879606, 1644978, "沙宝亮", "*没有找到专辑信息*"],
         "LET IT OUT": [631047, 53637, "福原美穂", "*没有找到专辑信息*"],
         "Butter-Fly (结局版)": [201626153, 8623, "和田光司", "*没有找到专辑信息*"],
-        "I wish": [103178398, 1066541, "AiM", "《デジモンアドベンチャー キュートビートクラブ》"]
+        "I wish": [103178398, 1066541, "AiM", "《デジモンアドベンチャー キュートビートクラブ》"],
+        "Mirror Night": [101803992, 929886, "V.K克", "《Deemo》"]
     }
 };
 
@@ -410,6 +416,7 @@ function Next(){
                 arr.push(key2);
             }
             next = arr[Math.floor(arr.length*Math.random())];
+            song_name = next;   // 更新song_name的对应歌曲
             play_song(next, json_liked.liked[next]);
         }
     }

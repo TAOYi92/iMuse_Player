@@ -17,11 +17,11 @@ function platform() {
     // 跳转语句，如果是手机访问则更换为适配大小的背景图片
     if(system.win || system.mac || system.xll){
         //document.body.style.backgroundImage = "url(http://img3.iqilu.com/data/attachment/forum/201308/21/170704bbqga1b5bz5lwt0f.jpg)";
-        console.log("platform: pc");
+        window.console.log("platform: pc");
     }
     else{
-        document.body.style.backgroundImage = "url(http://www.51mtw.com/UploadFiles/2011-06/admin/2011062221284782995.jpg)";
-        console.log("platform: mobile");
+        //document.body.style.backgroundImage = "url(http://www.51mtw.com/UploadFiles/2011-06/admin/2011062221284782995.jpg)";
+        window.console.log("platform: mobile");
     }
 }
 
