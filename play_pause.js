@@ -11,7 +11,7 @@ var play_i = '<i class="fa fa-play"></i>',
 // Other JS variables  其他变量
 var click_counter = 0;  // counter user have clicked on play-icon  点击"播放/暂停"的次数
 
-music.volume = 0.3;  // set volume  设置播放音量  0~1
+music.volume = 0.2;  // set volume  设置播放音量  0~1
 
 // Control the play/pause state due to click  控制点击图标而导致的播放/暂停操作
 ctrl.onclick = function(){

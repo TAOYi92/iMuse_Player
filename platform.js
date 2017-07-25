@@ -2,12 +2,12 @@
  * Created by yitao on 2017/7/6.
  */
 // 判断是电脑端还是手机端
-function platform() {
+function platform(){
     //平台、设备和操作系统
     var system = {
-        win : false,
-        mac : false,
-        xll : false
+        win: false,
+        mac: false,
+        xll: false
     };
     // 检测平台
     var p = navigator.platform;
@@ -25,6 +25,6 @@ function platform() {
     }
 }
 
-$(document).ready(function() {
+$(document).ready(function(){
     platform();
 });

@@ -96,6 +96,16 @@ body{
     outline: none;
 }
 
+#cut{
+    position: absolute;
+    top: 125px;
+    left: 18px;
+    background-color: transparent;
+    text-align: center;
+    color: #f0f0f0;
+    outline: none;
+}
+
 /* 控制CD旋转的CSS动画 */
 @-webkit-keyframes rotate{
     from{-webkit-transform:rotate(0deg)}

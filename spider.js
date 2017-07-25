@@ -58,16 +58,16 @@ function search_song(song){
         cache: true,
         jsonp: false,
         jsonpCallback: "callback",
-        success: function (data) {
+        success: function(data){
             window.console.log("Request Success! Song: " + data.data.song.list[0].fsong);
             return 0;
         },
-        error: function () {
+        error: function(){
             window.alert("Request Song Failed!");
             window.console.log("Request Song Failed!");
             return 1;
         }
-    }).done(function (data) {
+    }).done(function(data){
         song_data_list = data.data.song.list[0];
         song_name = song_data_list.fsong;
         song_id = song_data_list.f.split("|")[0];
@@ -133,9 +133,9 @@ function play_song(song_name, [song_id, image_id, singer, album]){
                 lyricTime = [],             // 存储歌词时间
                 lyricSeconds = [],          // 将时间转化为秒数
                 lyricHTML = '';             // 填入lyricBox中的全部歌词<div>标签
-            for (var i = 5; i < lyric.length; i++) {
+            for(var i = 5; i < lyric.length; i++){
                 lyricValue.push(lyric[i].replace(/\[\d\d:\d\d\.\d\d\]/, ""));
-                if (lyricValue[i - 5] === "" || lyricValue[i - 5] === "\r" || lyricValue[i - 5] === "\n") {
+                if(lyricValue[i - 5] === "" || lyricValue[i - 5] === "\r" || lyricValue[i - 5] === "\n"){
                     lyric[i] += "- -";
                     lyricValue[i - 5] = "- -";  // 应该改为依赖时间间隔插入分界符
                 }
@@ -155,14 +155,14 @@ function play_song(song_name, [song_id, image_id, singer, album]){
             }
             timer(lrc_items);
         },
-        fail: function () {
+        fail: function(){
             $("#lyricBox").css({
                 transform: 'translateY(' + (dt*2) + 'px)',
                 webkitTransform: 'translateY(' + (dt*2) + 'px)'
             });
             lyricBox.innerHTML = "<div>** 暂无歌词 **</div>";
         }});
-    if(lyricBox.innerHTML === "<div>正在尝试加载歌词...</div>"){
+    if(lyricBox.innerHTML === "<div>正在尝试加载歌词...</div>" || lyricBox.innerHTML === ""){
         $("#lyricBox").css({
             transform: 'translateY(' + (dt*2) + 'px)',
             webkitTransform: 'translateY(' + (dt*2) + 'px)'
@@ -209,16 +209,16 @@ function timer(lrc_items){
 var flag = true,
     iIntervalId;
 // 显示搜索框
-function ShowItem() {
+function ShowItem(){
     var w = search.offsetWidth,
         maxw = 92;
 
-    function MoveOut() {
-        if (w < maxw) {
+    function MoveOut(){
+        if(w < maxw){
             search.style.width = w + "px";
             w += 2;
         }
-        else {
+        else{
             clearInterval(iIntervalId);
             search.style.display = "";
         }
@@ -228,10 +228,10 @@ function ShowItem() {
     flag = true;
 }
 // 隐藏搜索框
-function HideItem() {
+function HideItem(){
     var w = search.offsetWidth;
 
-    function MoveIn() {
+    function MoveIn(){
         if (w > 0) {
             search.style.width = w + "px";
             w -= 2;
@@ -251,13 +251,13 @@ var click_counter = 0;
 search_song(default_song);
 
 var last = "";
-search_btn.onclick = function () {
+search_btn.onclick = function(){
     this.disabled = true;
-    if (flag) {
-        if (search.value) {
-            if (last !== search.value) {  // 避免用户手抖
+    if(flag){
+        if(search.value){
+            if(last !== search.value){  // 避免用户手抖
                 last = search.value;
-                if (search.value === song_name) {
+                if(search.value === song_name){
                     HideItem();
                     search_btn.disabled = false;
                     return;
@@ -361,7 +361,7 @@ mode.onclick = function(){
         mode.innerHTML = order;
         music.loop = false;
     }
-    else if(mode.innerHTML === order) {
+    else if(mode.innerHTML === order){
         mode.innerHTML = random;
     }
     else{
@@ -371,12 +371,23 @@ mode.onclick = function(){
 };
 
 
+var cut = document.getElementById("cut");
+var cut_flag = false;
+// 切歌
+cut.onclick = function(){
+    //music.pause();
+    cut_flag = true;
+    Next();
+};
+
+
 var next = '',          // 下一首
     idx = 0,
     flag_song = false;
 var iInterval;
 // 在顺序播放和随机播放模式下的下一首音乐确定
 function Next(){
+    if(music.ended || cut_flag){
     /*$.get(
         "liked.php",
         function(js){
@@ -384,12 +395,11 @@ function Next(){
             window.console.log(js+" 2~");
         }
     );*/
-    if(json_liked.liked === {}){  // 避免空的歌单造成bug
-        play_song(song_name, [song_id, image_id, singer, album]);
-        return;
-    }
-    if(mode.innerHTML === order){
-        if(music.ended){
+        if(json_liked.liked === {}){  // 避免空的歌单造成bug
+            play_song(song_name, [song_id, image_id, singer, album]);
+            return;
+        }
+        if(mode.innerHTML === order){
             idx = 0;
             flag_song = false;
             for(var key in json_liked.liked){
@@ -408,9 +418,7 @@ function Next(){
             song_name = next;   // 更新song_name的对应歌曲
             play_song(next, json_liked.liked[next]);
         }
-    }
-    if(mode.innerHTML === random){
-        if(music.ended){
+        if(mode.innerHTML === random){
             var arr = [];
             for(var key2 in json_liked.liked){
                 arr.push(key2);
@@ -419,6 +427,7 @@ function Next(){
             song_name = next;   // 更新song_name的对应歌曲
             play_song(next, json_liked.liked[next]);
         }
+        cut_flag = false;
     }
 }
-iInterval = setInterval(Next, 2000);
+iInterval = setInterval(Next, 1000);
