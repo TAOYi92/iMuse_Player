@@ -207,7 +207,8 @@ function timer(lrc_items){
 
 
 var flag = true,
-    iIntervalId;
+    iIntervalId_in,
+    iIntervalId_out;
 // 显示搜索框
 function ShowItem(){
     var w = search.offsetWidth,
@@ -219,12 +220,12 @@ function ShowItem(){
             w += 2;
         }
         else{
-            clearInterval(iIntervalId);
+            clearInterval(iIntervalId_out);
             search.style.display = "";
         }
     }
 
-    iIntervalId = setInterval(MoveOut, 5);
+    iIntervalId_out = setInterval(MoveOut, 5);
     flag = true;
 }
 // 隐藏搜索框
@@ -237,12 +238,12 @@ function HideItem(){
             w -= 2;
         }
         else {
-            clearInterval(iIntervalId);
+            clearInterval(iIntervalId_in);
             search.style.display = "none";
         }
     }
 
-    iIntervalId = setInterval(MoveIn, 5);
+    iIntervalId_in = setInterval(MoveIn, 5);
     flag = false;
 }
 
