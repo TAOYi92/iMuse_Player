@@ -162,11 +162,11 @@ function play_song(song_name, [song_id, image_id, singer, album]){
             });
             lyricBox.innerHTML = "<div>** 暂无歌词 **</div>";
         }});
+    $("#lyricBox").css({
+        transform: 'translateY(' + (dt*2) + 'px)',
+        webkitTransform: 'translateY(' + (dt*2) + 'px)'
+    });
     if(lyricBox.innerHTML === "<div>正在尝试加载歌词...</div>" || lyricBox.innerHTML === ""){
-        $("#lyricBox").css({
-            transform: 'translateY(' + (dt*2) + 'px)',
-            webkitTransform: 'translateY(' + (dt*2) + 'px)'
-        });
         lyricBox.innerHTML = "<div>** 暂无歌词 **</div>";
     }
 }
@@ -179,6 +179,7 @@ function timer(lrc_items){
     // 初始化！
     st = -2*dt;
     item = 0;
+    flag_gender = "male";
     $("#lyricBox").css({
          transform: 'translateY(' + (-st) + 'px)',
          webkitTransform: 'translateY(' + (-st) + 'px)'
@@ -323,7 +324,7 @@ var json_liked = {
         "The Dawn": [876988, 34784, "Dreamtale", "《Beyond Reality》"],
         "Bad Apple!!": [106256359, 8623, "初音ミク", "*没有找到专辑信息*"],
         "Wings Of Piano": [101803994, 929886, "V.K克", "《Deemo》"],
-        "倾心相许": [7235331, 14849, "李彩桦", "罗嘉良", "《人造雨》"],
+        "倾心相许": [7235331, 14849, "李彩桦 罗嘉良", "《人造雨》"],
         "手掌心": [4988895, 431765, "丁当", "《兰陵王 电视剧原声带》"],
         "again (アニメ Version)": [102214175, 966296, "YUI", "《鋼の錬金術師 FULLMETAL ALCHEMIST Original Soundtrack 1》"],
         "暗香": [108879606, 1644978, "沙宝亮", "*没有找到专辑信息*"],
@@ -395,8 +396,11 @@ var cut = document.getElementById("cut");
 var cut_flag = false;
 // 切歌
 cut.onclick = function(){
-    //music.pause();
     cut_flag = true;
+    $("#lyricBox").css({
+         transform: 'translateY(' + (-st) + 'px)',
+         webkitTransform: 'translateY(' + (-st) + 'px)'
+    });
     Next();
 };
 
@@ -415,6 +419,7 @@ function Next(){
             window.console.log(js+" 2~");
         }
     );*/
+        last = search.value;
         if(json_liked.liked === {}){  // 避免空的歌单造成bug
             play_song(song_name, [song_id, image_id, singer, album]);
             return;
