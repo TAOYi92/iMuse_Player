@@ -98,8 +98,8 @@ function play_song(song_name, [song_id, image_id, singer, album]){
     search.value = song_name;                               // 将用户的搜索文本换成搜索到的音乐名称
 
     $("#lyricBox").css({
-         transform: 'translateY(0px)',
-         webkitTransform: 'translateY(0px)'
+         transform: 'translateY(' + (dt*2) + 'px)',
+         webkitTransform: 'translateY(' + (dt*2) + 'px)'
     });
     lyricBox.innerHTML = "<div>正在尝试加载歌词...</div>";
 
@@ -145,11 +145,11 @@ function play_song(song_name, [song_id, image_id, singer, album]){
             }
             $("#lyricBox").html(lyricHTML);
             var lrc_items = $("#lyricBox").children();
+            $("#lyricBox").css({
+                transform: 'translateY(' + (dt*2) + 'px)',
+                webkitTransform: 'translateY(' + (dt*2) + 'px)'
+            });
             if (lrc_items.size < 1) {
-                $("#lyricBox").css({
-                    transform: 'translateY(' + (dt*2) + 'px)',
-                    webkitTransform: 'translateY(' + (dt*2) + 'px)'
-                });
                 lyricBox.innerHTML = "<div>** 暂无歌词 **</div>";
                 return;
             }
@@ -173,7 +173,7 @@ function play_song(song_name, [song_id, image_id, singer, album]){
 
 
 var interval_id;
-var st = 0, dt = 40, item, counter;
+var st = -80, dt = 40, item, counter, flag_gender = "male";
 // 歌词同步
 function timer(lrc_items){
     // 初始化！
@@ -189,10 +189,17 @@ function timer(lrc_items){
             item = $(lrc_items[i]);
             if (item.data('time') === Math.floor(music.currentTime)){
                 lrc_items.removeClass('active');
+                lrc_items.removeClass('active-fe');
+                lrc_items.removeClass('active-both');
                 lrc_items.removeClass('inactive');
                 if(i > 1) $(lrc_items[i-2]).addClass('inactive');
                 if(i < lrc_items.length-2) $(lrc_items[i+2]).addClass('inactive');
-                item.addClass('active');
+                if(item.text()[0] === '女' && (item.text()[1] === '：' || item.text()[1] === ':')) flag_gender = 'female';
+                else if(item.text()[0] === '合' && (item.text()[1] === '：' || item.text()[1] === ':')) flag_gender = 'both';
+                else if(item.text()[0] === '男' && (item.text()[1] === '：' || item.text()[1] === ':')) flag_gender = 'male';
+                if(flag_gender === 'male') item.addClass('active');
+                else if(flag_gender === 'female') item.addClass('active-fe');
+                else if(flag_gender === 'both') item.addClass('active-both');
                 dt = item[0].getBoundingClientRect().top - counter; // 右边 = 40；
                 st += dt;
                 $("#lyricBox").css({
@@ -323,7 +330,19 @@ var json_liked = {
         "LET IT OUT": [631047, 53637, "福原美穂", "*没有找到专辑信息*"],
         "Butter-Fly (结局版)": [201626153, 8623, "和田光司", "*没有找到专辑信息*"],
         "I wish": [103178398, 1066541, "AiM", "《デジモンアドベンチャー キュートビートクラブ》"],
-        "Mirror Night": [101803992, 929886, "V.K克", "《Deemo》"]
+        "Mirror Night": [101803992, 929886, "V.K克", "《Deemo》"],
+        "美若黎明": [105670443, 1061065, "李健", "《李健》"],
+        "情歌王": [105163519, 34069, "古巨基", "《劲歌金曲2：》"],
+        "北京一夜 (Live)": [201020918, 1884793, "信乐团", "《精彩音乐汇》"],
+        "南山南": [5057872, 444153, "马頔", "《往复随安》"],
+        "向往": [155116, 13722, "李健", "《为你而来》"],
+        "风吹麦浪 (Live)": [4748119, 421722, "李健 孙俪", "《2013央视春晚》"],
+        "梦一场": [448332, 36511, "李健", "《遥远的天空底下》"],
+        "传奇": [1425301, 115694, "王菲", "《女人又一次哭泣》"],
+        "三生三世十里桃花": [203359526, 2177260, "那英", "*没有找到专辑信息*"],
+        "美丽的神话": [97162, 8170, "孙楠 韩红", "《忘不了你》"],
+        "只要有你": [4984656, 124433, "那英 孙楠", "《 电视剧原声带》"],
+        "Lydia": [233555, 20322, "飞儿乐团", "《F.I.R.乐团》"]
     }
 };
 

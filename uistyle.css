@@ -175,6 +175,16 @@ body{
     font-size: larger;
 }
 
+#lyricBox div.active-fe{
+    color: #d9534f;
+    font-size: larger;
+}
+
+#lyricBox div.active-both{
+    color: #67b168;
+    font-size: larger;
+}
+
 #lyricBox div.inactive{
     font-size: smaller;
     opacity: 0.6;
