@@ -15,7 +15,7 @@ function platform(){
     system.mac = p.indexOf("Mac") === 0;
     system.x11 = ((p === "X11") || (p.indexOf("Linux"))) === 0;
     // 跳转语句，如果是手机访问则更换为适配大小的背景图片
-    if(system.win || system.mac || system.xll){
+    if(system.win || system.mac || system.x11){
         //document.body.style.backgroundImage = "url(http://img3.iqilu.com/data/attachment/forum/201308/21/170704bbqga1b5bz5lwt0f.jpg)";
         window.console.log("platform: pc");
     }

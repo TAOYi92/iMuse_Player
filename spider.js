@@ -44,7 +44,7 @@ var music = document.getElementById("music"),
     lyricBox = document.getElementById("lyricBox");
 
 var pause_i = '<i class="fa fa-pause"></i>';
-
+// 搜索歌曲
 function search_song(song){
     if(song){
         params.w = song;  // Update the song name parameter
@@ -81,7 +81,7 @@ function search_song(song){
     });
 }
 
-
+// 播放歌曲
 function play_song(song_name, [song_id, image_id, singer, album]){
     clearInterval(interval_id);  // 在新歌词载入前停止歌词动画
     window.console.log(song_name + " " + song_id + " " + image_id + " " + singer + " " + album);
@@ -132,16 +132,23 @@ function play_song(song_name, [song_id, image_id, singer, album]){
             var lyricValue = [],            // 存储歌词文本
                 lyricTime = [],             // 存储歌词时间
                 lyricSeconds = [],          // 将时间转化为秒数
-                lyricHTML = '';             // 填入lyricBox中的全部歌词<div>标签
-            for(var i = 5; i < lyric.length; i++){
+                lyricHTML = '',             // 填入lyricBox中的全部歌词<div>标签
+                startlrc = 5;               // 从这个索引开始是歌词
+            for(var j = 0; j < 10 && j < lyric.length; j++){
+                if(lyric[j].match(/\[offset:\d+\]/)){
+                    startlrc = j+1;
+                    break;
+                }
+            }
+            for(var i = startlrc; i < lyric.length; i++){
                 lyricValue.push(lyric[i].replace(/\[\d\d:\d\d\.\d\d\]/, ""));
-                if(lyricValue[i - 5] === "" || lyricValue[i - 5] === "\r" || lyricValue[i - 5] === "\n"){
+                if(lyricValue[i - startlrc] === "" || lyricValue[i - startlrc] === "\r" || lyricValue[i - startlrc] === "\n"){
                     lyric[i] += "- -";
-                    lyricValue[i - 5] = "- -";  // 应该改为依赖时间间隔插入分界符
+                    lyricValue[i - startlrc] = "- -";  // 应该改为依赖时间间隔插入分界符
                 }
                 lyricTime.push(lyric[i].match(/\d\d:\d\d\.\d\d/)[0].split(":"));
-                lyricSeconds.push(parseInt(lyricTime[i - 5][0]) * 60 + parseInt(lyricTime[i - 5][1]));
-                lyricHTML += '<div data-time="' + lyricSeconds[i - 5] + '">' + lyricValue[i - 5] + '</div>';
+                lyricSeconds.push(parseInt(lyricTime[i - startlrc][0]) * 60 + parseInt(lyricTime[i - startlrc][1]));
+                lyricHTML += '<div data-time="' + lyricSeconds[i - startlrc] + '">' + lyricValue[i - startlrc] + '</div>';
             }
             $("#lyricBox").html(lyricHTML);
             var lrc_items = $("#lyricBox").children();
@@ -329,7 +336,7 @@ var json_liked = {
         "again (アニメ Version)": [102214175, 966296, "YUI", "《鋼の錬金術師 FULLMETAL ALCHEMIST Original Soundtrack 1》"],
         "暗香": [108879606, 1644978, "沙宝亮", "*没有找到专辑信息*"],
         "LET IT OUT": [631047, 53637, "福原美穂", "*没有找到专辑信息*"],
-        "Butter-Fly (结局版)": [201626153, 8623, "和田光司", "*没有找到专辑信息*"],
+        "Butter-Fly": [103178866, 1066602, "和田光司", "《デジモンアドベンチャー·シングルヒットパレード》"],
         "I wish": [103178398, 1066541, "AiM", "《デジモンアドベンチャー キュートビートクラブ》"],
         "Mirror Night": [101803992, 929886, "V.K克", "《Deemo》"],
         "美若黎明": [105670443, 1061065, "李健", "《李健》"],
@@ -339,11 +346,18 @@ var json_liked = {
         "向往": [155116, 13722, "李健", "《为你而来》"],
         "风吹麦浪 (Live)": [4748119, 421722, "李健 孙俪", "《2013央视春晚》"],
         "梦一场": [448332, 36511, "李健", "《遥远的天空底下》"],
-        "传奇": [1425301, 115694, "王菲", "《女人又一次哭泣》"],
+        "传奇 (2013版)": [8147979, 430428, "李健", "《拾光》"],
         "三生三世十里桃花": [203359526, 2177260, "那英", "*没有找到专辑信息*"],
         "美丽的神话": [97162, 8170, "孙楠 韩红", "《忘不了你》"],
         "只要有你": [4984656, 124433, "那英 孙楠", "《 电视剧原声带》"],
-        "Lydia": [233555, 20322, "飞儿乐团", "《F.I.R.乐团》"]
+        "Lydia": [233555, 20322, "飞儿乐团", "《F.I.R.乐团》"],
+        "secret base ~君がくれたもの~ (10 years after Ver.)": [5007162, 436493, "茅野愛衣 戸松遥", "《～君がくれたもの～》"],
+        "星の在り処 (Full Ver)": [621323, 52650, "う～み", "《英雄伝説 空の軌跡 オリジナルサウンドトラック》"],
+        "残酷な天使のテーゼ (Director's Edit. Version|Instrumental)": [102796190, 1032851, "高橋洋子", "《 / FLY ME TO THE MOON》"],
+        "老男孩": [1067128, 90932, "筷子兄弟", "《父亲》"],
+        "那些年": [4830481, 96428, "胡夏", "《燃点》"],
+        "Evolution Era": [200589028, 929886, "V.K克", "《Deemo》"],
+        "Let It Go": [5477052, 502740, "Demi Lovato", "*没有找到专辑信息*"]
     }
 };
 
