@@ -133,7 +133,8 @@ function play_song(song_name, [song_id, image_id, singer, album]){
                 lyricTime = [],             // 存储歌词时间
                 lyricSeconds = [],          // 将时间转化为秒数
                 lyricHTML = '',             // 填入lyricBox中的全部歌词<div>标签
-                startlrc = 5;               // 从这个索引开始是歌词
+                startlrc = 5,               // 从这个索引开始是歌词
+                empty_lrc_counter = 0;
             for(var j = 0; j < 10 && j < lyric.length; j++){
                 if(lyric[j].match(/\[offset:\d+\]/)){
                     startlrc = j+1;
@@ -141,15 +142,19 @@ function play_song(song_name, [song_id, image_id, singer, album]){
                 }
             }
             for(var i = startlrc; i < lyric.length; i++){
-                lyricValue.push(lyric[i].replace(/\[\d\d:\d\d\.\d\d\]/, ""));
-                if(lyricValue[i - startlrc] === "" || lyricValue[i - startlrc] === "\r" || lyricValue[i - startlrc] === "\n"){
-                    lyric[i] += "- -";
-                    lyricValue[i - startlrc] = "- -";  // 应该改为依赖时间间隔插入分界符
+                var lyricValueTmp = lyric[i].replace(/\[\d\d:\d\d\.\d\d\]/, "");
+                if(lyricValueTmp === "" || lyricValueTmp === "\r" || lyricValueTmp === "\n"){
+                    empty_lrc_counter++;
                 }
-                lyricTime.push(lyric[i].match(/\d\d:\d\d\.\d\d/)[0].split(":"));
-                lyricSeconds.push(parseInt(lyricTime[i - startlrc][0]) * 60 + parseInt(lyricTime[i - startlrc][1]));
-                lyricHTML += '<div data-time="' + lyricSeconds[i - startlrc] + '">' + lyricValue[i - startlrc] + '</div>';
+                else{
+                    var j = i - startlrc - empty_lrc_counter;
+                    lyricValue.push(lyricValueTmp);
+                    lyricTime.push(lyric[i].match(/\d\d:\d\d\.\d\d/)[0].split(":"));
+                    lyricSeconds.push(parseInt(lyricTime[j][0]) * 60 + parseInt(lyricTime[j][1]));
+                    lyricHTML += '<div data-time="' + lyricSeconds[j] + '">' + lyricValue[j] + '</div>\n';
+                }
             }
+            //window.console.log(lyricHTML);
             $("#lyricBox").html(lyricHTML);
             var lrc_items = $("#lyricBox").children();
             $("#lyricBox").css({
@@ -202,9 +207,11 @@ function timer(lrc_items){
                 lrc_items.removeClass('inactive');
                 if(i > 1) $(lrc_items[i-2]).addClass('inactive');
                 if(i < lrc_items.length-2) $(lrc_items[i+2]).addClass('inactive');
-                if(item.text()[0] === '女' && (item.text()[1] === '：' || item.text()[1] === ':')) flag_gender = 'female';
-                else if(item.text()[0] === '合' && (item.text()[1] === '：' || item.text()[1] === ':')) flag_gender = 'both';
-                else if(item.text()[0] === '男' && (item.text()[1] === '：' || item.text()[1] === ':')) flag_gender = 'male';
+                if(item.text()[1] === '：' || item.text()[1] === ':'){
+                    if(item.text()[0] === '女') flag_gender = 'female';
+                    else if(item.text()[0] === '合') flag_gender = 'both';
+                    else flag_gender = 'male';
+                }
                 if(flag_gender === 'male') item.addClass('active');
                 else if(flag_gender === 'female') item.addClass('active-fe');
                 else if(flag_gender === 'both') item.addClass('active-both');
@@ -264,7 +271,7 @@ function HideItem(){
 
 var default_song = "Love Story"; //化身孤岛的鲸
 var click_counter = 0;
-search_song(default_song);
+search_song(default_song);  // 登录个人账户后，default_song设置为上一次离开时的音乐
 
 var last = "";
 search_btn.onclick = function(){
