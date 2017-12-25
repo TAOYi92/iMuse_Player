@@ -127,6 +127,11 @@ body{
 /** CD封面（遮罩）**/
 #cd{
     background-color: navajowhite;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
     animation: 9.5s linear 0s normal none infinite rotate;
     -webkit-animation: 9.5s linear 0s normal none infinite rotate;
     /** 尺寸 **/
@@ -147,6 +152,22 @@ body{
     top: 83px;  /** 这里还是要手动，不然看不到图标，因此仍可改进 **/
     left: 84px; /** icon大小12*14 所以83=0.5*(180-14) 84=0.5*(180-12)**/
 }
+/*
+#volume{
+  border:none;
+  height:2px;
+  background:hsla(180,20%,50%,1);
+}
+.ui-slider-handle{
+  border-radius:50%;
+  color: red;
+  top: -5px !important;
+  width: 11px !important;
+  height: 81px !important;
+  margin-left:-5px !important;
+  z-index: 2;
+}
+*/
 
 #white-circle{
     background-color: transparent;

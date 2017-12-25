@@ -195,7 +195,7 @@ function timer(lrc_items){
     function check(){
         for(var i = 0; i < lrc_items.length; i++){
             item = $(lrc_items[i]);
-            if (item.data('time') === Math.floor(music.currentTime)){
+            if (item.data('time') === Math.ceil(music.currentTime)){
                 lrc_items.removeClass('active');
                 lrc_items.removeClass('active-fe');
                 lrc_items.removeClass('active-both');
@@ -349,7 +349,7 @@ var json_liked = {
         "传奇 (2013版)": [8147979, 430428, "李健", "《拾光》"],
         "三生三世十里桃花": [203359526, 2177260, "那英", "*没有找到专辑信息*"],
         "美丽的神话": [97162, 8170, "孙楠 韩红", "《忘不了你》"],
-        "只要有你": [4984656, 124433, "那英 孙楠", "《 电视剧原声带》"],
+        "只要有你": [4984656, 124433, "那英 孙楠", "《电视剧原声带》"],
         "Lydia": [233555, 20322, "飞儿乐团", "《F.I.R.乐团》"],
         "secret base ~君がくれたもの~ (10 years after Ver.)": [5007162, 436493, "茅野愛衣 戸松遥", "《～君がくれたもの～》"],
         "星の在り処 (Full Ver)": [621323, 52650, "う～み", "《英雄伝説 空の軌跡 オリジナルサウンドトラック》"],
@@ -357,7 +357,13 @@ var json_liked = {
         "老男孩": [1067128, 90932, "筷子兄弟", "《父亲》"],
         "那些年": [4830481, 96428, "胡夏", "《燃点》"],
         "Evolution Era": [200589028, 929886, "V.K克", "《Deemo》"],
-        "Let It Go": [5477052, 502740, "Demi Lovato", "*没有找到专辑信息*"]
+        "Let It Go": [5477052, 502740, "Demi Lovato", "*没有找到专辑信息*"],
+        "黑暗森林": [202222172, 8623, "云翼星辰", "*没有找到专辑信息*"],
+        "伊人如梦": [104923727, 1197421, "霍尊", "《伊人如梦》"],
+        "Opera 2": [4832478, 31315, "Vitas", "《Tancevalniy Marafon》"],
+        "九九八十一": [106350845, 1373520, "双笙 易言", "《笙声不息》"],
+        "醉赤壁": [105388642, 36160, "林俊杰", "《JJ陆》"],
+        "Moves Like Jagger": [1508669, 121472, "Maroon 5 Christina Aguilera", "《Overexposed (Deluxe)》"]
     }
 };
 
