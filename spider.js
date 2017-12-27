@@ -95,7 +95,8 @@ function play_song(song_name, [song_id, image_id, singer, album]){
     cd.style.backgroundImage = `url(${imgUrl})`;            // 更新cd背景图片
     cd.style.animationPlayState = "running";                // 初始化转盘动画：转动
     info.innerText = `\n${song_name} - ${singer}\n${album}`;// 更新音乐信息文本
-    search.value = song_name;                               // 将用户的搜索文本换成搜索到的音乐名称
+    //search.placeholder = song_name;                         // 将搜索栏placeholder换成搜索到的音乐名称
+    search.value = "";                                      // 将搜索文本设置为空，以显示placeholder，方便下次搜索
 
     $("#lyricBox").css({
          transform: 'translateY(' + (dt*2) + 'px)',
@@ -272,10 +273,10 @@ function HideItem(){
 var default_song = "Love Story"; //化身孤岛的鲸
 var click_counter = 0;
 search_song(default_song);  // 登录个人账户后，default_song设置为上一次离开时的音乐
+HideItem();
 
 var last = "";
-search_btn.onclick = function(){
-    this.disabled = true;
+function search_exec(){
     if(flag){
         if(search.value){
             if(last !== search.value){  // 避免用户手抖
@@ -295,10 +296,22 @@ search_btn.onclick = function(){
     else {
         ShowItem();
     }
+}
+
+// 鼠标点击搜索图标执行搜索
+search_btn.onclick = function(){
+    this.disabled = true;
+    search_exec();
     click_counter++;
     search_btn.disabled = false;
     return false; // Prevent Default Action
 };
+// 键盘按下回车键执行搜索
+$("#search").keydown(function() {
+    if (window.event.keyCode === 13) {//keyCode=13是回车键；数字不同代表监听的按键不同
+        search_exec();
+    }
+});
 
 
 // "我喜欢功能"
@@ -446,7 +459,7 @@ function Next(){
             window.console.log(js+" 2~");
         }
     );*/
-        last = search.value;
+        last = search.placeholder;
         if(json_liked.liked === {}){  // 避免空的歌单造成bug
             play_song(song_name, [song_id, image_id, singer, album]);
             return;
